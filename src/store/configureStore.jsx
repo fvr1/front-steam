@@ -8,4 +8,12 @@ const configureStore = (initialState) => createStore(
   applyMiddleware(thunk)
 );
 
-export default configureStore;
+const initialState = {
+  user: {},
+  loading: false,
+  message: {},
+};
+
+const store = configureStore(initialState);
+
+export default store;
