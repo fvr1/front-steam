@@ -11,7 +11,7 @@ const PrivateRoute = ({ user, component: Component, ...rest }) => (
 );
 
 PrivateRoute.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.object.isRequired,
   component: PropTypes.func.isRequired,
 };
 
