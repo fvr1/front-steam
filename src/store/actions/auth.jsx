@@ -12,12 +12,10 @@ const loginSuccess = (user) => ({
 // TODO: remove disable eslint after adding fetch
 // eslint-disable-next-line no-unused-vars
 const authenticate = (user, password) => async (dispatch) => {
-  console.log('auth action holaaa');
   dispatch(isLoading(true));
   // TODO: change to fetch real
   await sleep(1000);
   dispatch(isLoading(false));
-  console.log('auth action holaaa');
 
   dispatch(loginSuccess({ username: user, token: 'hola' }));
 

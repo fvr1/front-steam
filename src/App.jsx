@@ -6,8 +6,6 @@ import Login from './containers/Login';
 
 function App(props) {
   const { user, loading } = props;
-  console.log(user);
-  console.log(props);
   const isAuthenticated = user.username ? 'auth working' : 'not authenticated';
   return (
     <div className="App">

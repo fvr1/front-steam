@@ -10,7 +10,6 @@ class Login extends Component {
   }
 
   handleClick(event) {
-    console.log('hola');
     const { auth } = this.props;
     auth('username', 'pass');
   }
