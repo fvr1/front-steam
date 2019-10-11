@@ -5,7 +5,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { PersistGate } from 'redux-persist/integration/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './index.css';
-import App from './App';
+import AppRouter from './routers/AppRouter';
 import theme from './theme';
 import * as serviceWorker from './serviceWorker';
 import { store, persistor } from './store/configureStore';
@@ -16,7 +16,7 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <AppRouter />
       </MuiThemeProvider>
     </PersistGate>
   </Provider>,
