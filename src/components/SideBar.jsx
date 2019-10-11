@@ -9,6 +9,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, useTheme } from '@material-ui/styles';
+import { Link, withRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -52,8 +53,14 @@ const SideBar = (props) => {
       </div>
       <Divider />
       <List>
+        <ListItem button key="games">
+          <Link to="/"><ListItemText primary="Games" /></Link>
+        </ListItem>
         <ListItem button key="store">
-          <ListItemText primary="Store" />
+          <Link to="/store"><ListItemText primary="Store" /></Link>
+        </ListItem>
+        <ListItem button key="stats">
+          <Link to="/stats"><ListItemText primary="Stats" /></Link>
         </ListItem>
       </List>
     </Drawer>
@@ -68,4 +75,4 @@ SideBar.propTypes = {
 SideBar.defaultProps = {
 };
 
-export default SideBar;
+export default withRouter(SideBar);
