@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { PersistGate } from 'redux-persist/integration/react';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import './index.css';
 import App from './App';
+import theme from './theme';
 import * as serviceWorker from './serviceWorker';
 import { store, persistor } from './store/configureStore';
 
@@ -11,7 +14,10 @@ import { store, persistor } from './store/configureStore';
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </MuiThemeProvider>
     </PersistGate>
   </Provider>,
   document.getElementById('root')

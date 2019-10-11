@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from '@material-ui/core';
 import Login from './containers/Login';
 
 function App(props) {
@@ -14,6 +15,7 @@ function App(props) {
       </header>
       <Login />
       <p>{isAuthenticated}</p>
+      <Button color="primary">Hola</Button>
       <p>{loading ? 'true' : 'false'}</p>
     </div>
   );
