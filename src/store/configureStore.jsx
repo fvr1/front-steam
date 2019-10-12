@@ -11,7 +11,9 @@ const configureStore = (initialState) => createStore(
 );
 
 const initialState = {
-  user: {},
+  user: {
+    logged: false,
+  },
   loading: false,
   message: {},
 };

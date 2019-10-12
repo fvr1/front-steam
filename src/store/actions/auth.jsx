@@ -9,6 +9,11 @@ const loginSuccess = (user) => ({
   },
 });
 
+const logout = () => ({
+  type: 'LOGOUT',
+  payload: {},
+});
+
 // TODO: remove disable eslint after adding fetch
 // eslint-disable-next-line no-unused-vars
 const authenticate = (user, password) => async (dispatch) => {
@@ -39,4 +44,5 @@ const authenticate = (user, password) => async (dispatch) => {
 export {
   loginSuccess,
   authenticate,
+  logout,
 };

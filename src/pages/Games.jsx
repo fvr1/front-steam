@@ -7,7 +7,7 @@ export default class GamesPage extends Component {
   render() {
     return (
       <div>
-        <Typography variant="h1">GamesPage</Typography>
+        <Typography variant="h3">GamesPage</Typography>
         <Login />
       </div>
     );
