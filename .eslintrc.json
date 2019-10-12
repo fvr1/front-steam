@@ -24,6 +24,7 @@
         "no-console": "off",
         "comma-dangle": ["error", "always-multiline"],
         "react/button-has-type": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "react/forbid-prop-types": "off"
     }
 }
