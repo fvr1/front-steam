@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import { Button, Typography } from '@material-ui/core';
 import { authenticate } from '../store/actions/auth';
 
 class Login extends Component {
@@ -15,11 +17,15 @@ class Login extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    const isLoggedIn = _.isEmpty(user) ? 'Logged in' : 'Not logged in';
+
     return (
       <div>
-        <button onClick={this.handleClick}>
+        <Button onClick={this.handleClick}>
           Authenticate
-        </button>
+        </Button>
+        <Typography>{isLoggedIn}</Typography>
       </div>
     );
   }
@@ -27,6 +33,7 @@ class Login extends Component {
 
 Login.propTypes = {
   auth: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
