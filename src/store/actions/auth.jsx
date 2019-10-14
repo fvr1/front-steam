@@ -1,5 +1,5 @@
-import { sleep } from '../../utils';
-import { isLoading } from './general';
+import { postAuth, generateToken } from '../../utils';
+import { isLoading, hasErrored } from './general';
 
 
 const loginSuccess = (user) => ({
@@ -14,35 +14,74 @@ const logout = () => ({
   payload: {},
 });
 
-// TODO: remove disable eslint after adding fetch
-// eslint-disable-next-line no-unused-vars
+const register = (user, password, confirmPassword) => async (dispatch) => {
+  dispatch(isLoading(true));
+  const body = {
+    user: {
+      password,
+      username: user,
+      confirm_password: confirmPassword,
+    },
+  };
+  const jwt = generateToken();
+  postAuth('/signup', body, jwt)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      dispatch(isLoading(false));
+      return response;
+    })
+    .then(async (response) => {
+      const { headers } = response;
+      const responseBody = await response.json();
+      return { headers, body: responseBody };
+    })
+    .then((data) => dispatch(loginSuccess({
+      token: data.headers.get('Authorization'),
+      sessionId: jwt,
+      username: data.body.username,
+      id: data.body.id,
+    })))
+    .catch(() => dispatch(hasErrored(true, 'Authentication failed')));
+  dispatch(isLoading(false));
+};
+
 const authenticate = (user, password) => async (dispatch) => {
   dispatch(isLoading(true));
-  // TODO: change to fetch real
-  await sleep(1000);
+  const body = {
+    user: {
+      password,
+      username: user,
+    },
+  };
+  const jwt = generateToken();
+  postAuth('/login', body, jwt)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      dispatch(isLoading(false));
+      return response;
+    })
+    .then(async (response) => {
+      const { headers } = response;
+      const responseBody = await response.json();
+      return { headers, body: responseBody };
+    })
+    .then((data) => dispatch(loginSuccess({
+      token: data.headers.get('Authorization'),
+      sessionId: jwt,
+      username: data.body.username,
+      id: data.body.id,
+    })))
+    .catch(() => dispatch(hasErrored(true, 'Authentication failed')));
   dispatch(isLoading(false));
-
-  dispatch(loginSuccess({ username: user, token: 'hola' }));
-
-  // fetch('url')
-  //   .then((response) => {
-  //     if (!response.ok) {
-  //       throw Error(response.statusText);
-  //     }
-  //     dispatch(isLoading(false));
-  //     return response;
-  //   })
-  //   .then((response) => response.json())
-  //   // TODO: change to corresponding response
-  //   .then((userResponse) => dispatch(loginSuccess({
-  //     ...userResponse,
-  //     username: user,
-  //   })))
-  //   .catch(() => dispatch(hasErrored(true, 'Authentication failed')));
 };
 
 export {
   loginSuccess,
   authenticate,
   logout,
+  register,
 };
