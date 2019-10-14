@@ -56,7 +56,6 @@ class Login extends Component {
   render() {
     const { loading, classes, user } = this.props;
     const { username, password } = this.state;
-    console.log(user);
 
     return (
       <div className={classes.container}>
