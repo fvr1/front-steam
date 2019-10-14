@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { TextField, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { authenticate } from '../store/actions/auth';
@@ -45,14 +46,11 @@ class Login extends Component {
     });
   }
 
-  handleLogIn(event) {
-    event.preventDefault();
-    const { auth } = this.props;
+  handleLogIn() {
+    const { auth, history } = this.props;
     const { username, password } = this.state;
-    auth(username, password);
-    this.setState({
-      username: '',
-      password: '',
+    auth(username, password).then(() => {
+      history.push('/');
     });
   }
 
@@ -65,7 +63,7 @@ class Login extends Component {
       <div className={classes.container}>
         <Paper className={classes.form}>
           <TextField
-            id="password"
+            id="username"
             name="username"
             label="Username"
             value={username}
@@ -101,6 +99,7 @@ Login.propTypes = {
   auth: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 Login.defaultProps = {
@@ -116,4 +115,4 @@ const mapDispatchToProps = (dispatch) => ({
   auth: (user, pass) => dispatch(authenticate(user, pass)),
 });
 
-export default connect(mapStoreToProps, mapDispatchToProps)(withStyles(styles)(Login));
+export default connect(mapStoreToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Login)));

@@ -17,6 +17,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
+    boxShadow: theme.shadows[1],
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -45,15 +46,13 @@ const TopBar = (props) => {
   const { open, onOpen, user } = props;
   const history = useHistory();
 
-  const handleLogOut = (event) => {
-    event.preventDefault();
+  const handleLogOut = () => {
     const { logOut } = props;
     logOut();
     history.push('/');
   };
 
-  const handleLogIn = (event) => {
-    event.preventDefault();
+  const handleLogIn = () => {
     history.push('/login');
   };
 
