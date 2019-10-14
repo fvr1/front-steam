@@ -1,38 +1,97 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Typography } from '@material-ui/core';
-import { authenticate, logout } from '../store/actions/auth';
+import { TextField, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { authenticate } from '../store/actions/auth';
 import LoadingButton from '../components/LoadingButton';
+
+const styles = () => ({
+  container: {
+    marginTop: 120,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  form: {
+    width: '60%',
+    padding: '4%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  input: {
+    minWidth: '70%',
+  },
+  submitButton: {
+    width: '20%',
+    minWidth: 60,
+  },
+});
+
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      username: '',
+      password: '',
+    };
     this.handleLogIn = this.handleLogIn.bind(this);
-    this.handleLogOut = this.handleLogOut.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   }
 
   handleLogIn(event) {
+    event.preventDefault();
     const { auth } = this.props;
-    auth('username', 'pass');
+    const { username, password } = this.state;
+    auth(username, password);
+    this.setState({
+      username: '',
+      password: '',
+    });
   }
 
-  handleLogOut(event) {
-    const { logOut } = this.props;
-    logOut();
-  }
 
   render() {
-    const { user, loading } = this.props;
-    const isLoggedIn = user.logged ? 'Logged in' : 'Not logged in';
-    const logButton = user.logged
-      ? (<Button onClick={this.handleLogOut}> LogOut </Button>)
-      : (<LoadingButton onClick={this.handleLogIn} loading={loading}> LogIn </LoadingButton>);
+    const { loading, classes } = this.props;
+    const { username, password } = this.state;
 
     return (
-      <div>
-        {logButton}
-        <Typography>{isLoggedIn}</Typography>
+      <div className={classes.container}>
+        <Paper className={classes.form}>
+          <TextField
+            id="password"
+            name="username"
+            label="Username"
+            value={username}
+            onChange={this.handleChange}
+            margin="normal"
+            className={classes.input}
+          />
+          <TextField
+            id="password"
+            name="password"
+            label="Password"
+            value={password}
+            onChange={this.handleChange}
+            className={classes.input}
+            margin="normal"
+            type="password"
+          />
+          <LoadingButton
+            onClick={this.handleLogIn}
+            loading={loading}
+            className={classes.submitButton}
+            color="primary"
+          >
+            LogIn
+          </LoadingButton>
+        </Paper>
       </div>
     );
   }
@@ -40,13 +99,11 @@ class Login extends Component {
 
 Login.propTypes = {
   auth: PropTypes.func.isRequired,
-  logOut: PropTypes.func.isRequired,
-  user: PropTypes.object,
   loading: PropTypes.bool,
+  classes: PropTypes.object.isRequired,
 };
 
 Login.defaultProps = {
-  user: {},
   loading: false,
 };
 
@@ -57,7 +114,6 @@ const mapStoreToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   auth: (user, pass) => dispatch(authenticate(user, pass)),
-  logOut: () => dispatch(logout()),
 });
 
-export default connect(mapStoreToProps, mapDispatchToProps)(Login);
+export default connect(mapStoreToProps, mapDispatchToProps)(withStyles(styles)(Login));

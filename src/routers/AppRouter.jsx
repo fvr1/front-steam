@@ -6,6 +6,7 @@ import GamesPage from '../pages/Games';
 import StatsPage from '../pages/Stats';
 import StorePage from '../pages/Store';
 import NavLayout from '../layouts/Nav';
+import Login from '../containers/Login';
 
 const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ export default () => (
     <Router history={history}>
       <NavLayout>
         <Switch>
+          <Route path="/login" component={Login} />
           <Route exact path="/" component={GamesPage} />
           <Route path="/stats" component={StatsPage} />
           <PrivateRoute path="/store" component={StorePage} />
