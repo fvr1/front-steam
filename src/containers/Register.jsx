@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { TextField, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { authenticate } from '../store/actions/auth';
+import { register } from '../store/actions/auth';
 import LoadingButton from '../components/LoadingButton';
 
 const styles = () => ({
@@ -29,12 +29,13 @@ const styles = () => ({
 });
 
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
+      confirmPassword: '',
     };
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -47,14 +48,14 @@ class Login extends Component {
   }
 
   handleLogIn() {
-    const { auth } = this.props;
-    const { username, password } = this.state;
-    auth(username, password);
+    const { signUp } = this.props;
+    const { username, password, confirmPassword } = this.state;
+    signUp(username, password, confirmPassword);
   }
 
   render() {
     const { loading, classes } = this.props;
-    const { username, password } = this.state;
+    const { username, password, confirmPassword } = this.state;
 
     return (
       <div className={classes.container}>
@@ -78,6 +79,16 @@ class Login extends Component {
             margin="normal"
             type="password"
           />
+          <TextField
+            id="confirm-password"
+            name="confirmPassword"
+            label="Confirm password"
+            value={confirmPassword}
+            onChange={this.handleChange}
+            className={classes.input}
+            margin="normal"
+            type="password"
+          />
           <LoadingButton
             onClick={this.handleLogIn}
             loading={loading}
@@ -92,15 +103,15 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  auth: PropTypes.func.isRequired,
+Register.propTypes = {
+  signUp: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   classes: PropTypes.object.isRequired,
   // user: PropTypes.object.isRequired,
   // history: PropTypes.object.isRequired,
 };
 
-Login.defaultProps = {
+Register.defaultProps = {
   loading: false,
 };
 
@@ -110,7 +121,9 @@ const mapStoreToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  auth: (user, pass) => dispatch(authenticate(user, pass)),
+  signUp: (user, pass) => dispatch(register(user, pass)),
 });
 
-export default connect(mapStoreToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Login)));
+export default connect(mapStoreToProps, mapDispatchToProps)(
+  withRouter(withStyles(styles)(Register))
+);
