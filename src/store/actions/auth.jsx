@@ -1,4 +1,4 @@
-import { postAuth, generateToken } from '../../utils';
+import { postAuth, deleteAuth, generateToken } from '../../utils';
 import { isLoading, hasErrored } from './general';
 
 
@@ -9,10 +9,24 @@ const loginSuccess = (user) => ({
   },
 });
 
-const logout = () => ({
+const logoutSuccess = () => ({
   type: 'LOGOUT',
   payload: {},
 });
+
+const logout = (sessionId) => async (dispatch) => {
+  dispatch(isLoading(true));
+  deleteAuth('/logout', sessionId)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      dispatch(isLoading(false));
+      return response;
+    })
+    .then(() => dispatch(logoutSuccess()));
+  dispatch(isLoading(false));
+};
 
 const register = (user, password, confirmPassword) => async (dispatch) => {
   dispatch(isLoading(true));

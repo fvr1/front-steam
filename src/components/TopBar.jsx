@@ -2,8 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +15,7 @@ import { logout } from '../store/actions/auth';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   appBar: {
     boxShadow: theme.shadows[1],
     transition: theme.transitions.create(['margin', 'width'], {
@@ -37,60 +37,69 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: 'none',
   },
-}));
+});
 
+class TopBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLogIn = this.handleLogIn.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
+  }
 
-const TopBar = (props) => {
-  const theme = useTheme();
-  const classes = useStyles(theme);
-  const { open, onOpen, user } = props;
-  const history = useHistory();
-
-  const handleLogOut = () => {
-    const { logOut } = props;
-    logOut();
+  handleLogOut() {
+    const { logOut, user, history } = this.props;
+    logOut(user.sessionId);
     history.push('/');
-  };
+  }
 
-  const handleLogIn = () => {
+  handleLogIn() {
+    const { history } = this.props;
     history.push('/login');
-  };
+  }
 
-  const logButton = user.logged
-    ? (<Button onClick={handleLogOut}> LogOut </Button>)
-    : (<Button onClick={handleLogIn}> LogIn </Button>);
+  render() {
+    const {
+      user, classes, onOpen, open,
+    } = this.props;
+    const logButton = user.logged
+      ? (<Button onClick={this.handleLogOut}> LogOut </Button>)
+      : (<Button onClick={this.handleLogIn}> LogIn </Button>);
 
-  return (
-    <AppBar
-      position="fixed"
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: open,
-      })}
-    >
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={onOpen}
-          edge="start"
-          className={clsx(classes.menuButton, open && classes.hide)}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" noWrap>
-          Steam
-        </Typography>
-        {logButton}
-      </Toolbar>
-    </AppBar>
-  );
-};
+    return (
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={onOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            Steam
+          </Typography>
+          {logButton}
+        </Toolbar>
+      </AppBar>
+    );
+  }
+}
+
 
 TopBar.propTypes = {
   open: PropTypes.bool.isRequired,
   onOpen: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   logOut: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -99,7 +108,9 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  logOut: () => dispatch(logout()),
+  logOut: (sessionId) => dispatch(logout(sessionId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles, { withTheme: true })(withRouter(TopBar))
+);

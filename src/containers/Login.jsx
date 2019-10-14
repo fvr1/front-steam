@@ -52,9 +52,8 @@ class Login extends Component {
     auth(username, password);
   }
 
-
   render() {
-    const { loading, classes, user } = this.props;
+    const { loading, classes } = this.props;
     const { username, password } = this.state;
 
     return (
@@ -97,7 +96,7 @@ Login.propTypes = {
   auth: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  // user: PropTypes.object.isRequired,
   // history: PropTypes.object.isRequired,
 };
 

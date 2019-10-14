@@ -21,8 +21,21 @@ const postAuth = (route, body, jwt) => (
   })
 );
 
+const deleteAuth = (route, jwt) => {
+  return (
+    fetch(`${AUTH_URL}${route}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        JWT_AUD: jwt,
+      },
+    })
+  );
+};
 export {
   sleep,
   postAuth,
+  deleteAuth,
   generateToken,
 };
