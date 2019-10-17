@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Typography } from '@material-ui/core';
-import Login from '../containers/Login';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class GamesPage extends Component {
@@ -8,7 +7,6 @@ export default class GamesPage extends Component {
     return (
       <div>
         <Typography variant="h3">GamesPage</Typography>
-        <Login />
       </div>
     );
   }
