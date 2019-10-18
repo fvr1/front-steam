@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  text: {
+    color: 'white',
+  },
 }));
 
 const SideBar = (props) => {
@@ -54,13 +57,13 @@ const SideBar = (props) => {
       <Divider />
       <List>
         <ListItem button key="games">
-          <Link to="/"><ListItemText primary="Games" /></Link>
+          <Link to="/" className={classes.text}><ListItemText primary="Games" /></Link>
         </ListItem>
         <ListItem button key="store">
-          <Link to="/store"><ListItemText primary="Store" /></Link>
+          <Link to="/store" className={classes.text}><ListItemText primary="Store" /></Link>
         </ListItem>
         <ListItem button key="stats">
-          <Link to="/stats"><ListItemText primary="Stats" /></Link>
+          <Link to="/stats" className={classes.text}><ListItemText primary="Stats" /></Link>
         </ListItem>
       </List>
     </Drawer>
