@@ -31,6 +31,22 @@ const styles = (theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  container: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  left: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  right: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -44,6 +60,7 @@ class TopBar extends React.Component {
     super(props);
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
   }
 
   handleLogOut() {
@@ -57,13 +74,23 @@ class TopBar extends React.Component {
     history.push('/login');
   }
 
+  handleRegister() {
+    const { history } = this.props;
+    history.push('/register');
+  }
+
   render() {
     const {
       user, classes, onOpen, open,
     } = this.props;
     const logButton = user.logged
       ? (<Button onClick={this.handleLogOut}> LogOut </Button>)
-      : (<Button onClick={this.handleLogIn}> LogIn </Button>);
+      : (
+        <div>
+          <Button onClick={this.handleLogIn}> LogIn </Button>
+          <Button onClick={this.handleRegister}> SignUp </Button>
+        </div>
+      );
 
     return (
       <AppBar
@@ -71,21 +98,28 @@ class TopBar extends React.Component {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
+        color="inherit"
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={onOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Steam
-          </Typography>
-          {logButton}
+          <div className={classes.container}>
+            <div className={classes.left}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={onOpen}
+                edge="start"
+                className={clsx(classes.menuButton, open && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                Steam
+              </Typography>
+            </div>
+            <div className={classes.right}>
+              {logButton}
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
     );
